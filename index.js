@@ -25,14 +25,14 @@ const fetchAllBlogs = async (start, end) => {
       totalRecord.innerHTML = `
       <p class="text-sm text-gray-700">
           Showing
-          <span class="font-medium">${start + 1}</span>
+          <span>${start + 1}</span>
           to
-          <span class="font-medium">${end}</span>
+          <span>${end}</span>
           of
-          <span class="font-medium">${data.length}</span>
+          <span>${data.length}</span>
           results,
           Current page: 
-          <span class="font-medium">${Math.ceil((start - 1) / 5) + 1}</span>
+          <span>${Math.ceil((start - 1) / 5) + 1}</span>
       </p>
     `;
 
@@ -54,13 +54,13 @@ const fetchAllBlogs = async (start, end) => {
           return `
           <tr>
               <td>
-                  <div class="text-sm text-gray-900">${item.id}</div>
+                  <div class="table-text">${item.id}</div>
               </td>
               <td>
-                  <div class="text-sm text-gray-900">${item.title}</div>
+                  <div class="table-text">${item.title}</div>
               </td>
               <td>
-                  <div class="text-sm text-gray-900">
+                  <div class="table-text">
                       <img
                       class="w-[70px] rounded h-[70px]"
                       src="${item.image}"
@@ -69,10 +69,10 @@ const fetchAllBlogs = async (start, end) => {
                   </div>
               </td>
               <td>
-                  <div class="text-sm text-gray-900">${item.content}</div>
+                  <div class="table-text">${item.content}</div>
               </td>
               <td>
-                  <div class="text-sm text-gray-900">${dateFormat}</div>
+                  <div class="table-text">${dateFormat}</div>
               </td>
               <td>
                   <button

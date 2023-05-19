@@ -17,3 +17,14 @@
 #modal-blog input {
     @apply h-10 border mt-1 rounded px-4 w-full bg-gray-50;
 }
+#modal-blog button {
+    @apply inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm;
+}
+
+.table-text {
+    @apply text-sm text-gray-900;
+}
+
+#total-record p span {
+    @apply font-medium;
+}
