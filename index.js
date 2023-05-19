@@ -1,3 +1,6 @@
+import { request } from "./config.js";
+import { createBlogApi, fetchAllBlogs, updateBlogApi } from "./api.js";
+
 const tableBlogs = document.querySelector("#table-blogs");
 const modal = document.querySelector("#modal-blog");
 let pageSize = 5;
@@ -10,37 +13,31 @@ const formatTime = (str) => {
   return str.length === 1 ? `0${str}` : str;
 };
 
-const fetchAllBlogs = async (start, end) => {
-  let xhr = new XMLHttpRequest();
+const renderBlogs = async (start, end) => {
+  const response = await fetchAllBlogs();
+  const data = JSON.parse(response);
 
-  xhr.open("GET", "https://617b71c2d842cf001711bed9.mockapi.io/api/v1/blogs");
-  let data = [];
+  totalCount = data.length;
 
-  xhr.onreadystatechange = () => {
-    if (xhr.readyState === 4) {
-      data = JSON.parse(xhr.response);
+  const tbody = tableBlogs.querySelector("tbody");
 
-      totalCount = data.length;
+  tbody.innerHTML = data
+    .sort((a, b) => Number(b.id) - Number(a.id))
+    .slice(start, end)
+    .map((item) => {
+      const date = new Date(item.createdAt);
+      const dateFormat = `${formatTime(date.getDate().toString())}/${formatTime(
+        (date.getMonth() + 1).toString()
+      )}/${date
+        .getFullYear()
+        .toString()
+        .split("")
+        .slice(2)
+        .join("")} ${formatTime(date.getUTCHours().toString())}:${formatTime(
+        date.getMinutes().toString()
+      )}`;
 
-      const tbody = tableBlogs.querySelector("tbody");
-
-      tbody.innerHTML = data
-        .sort((a, b) => Number(b.id) - Number(a.id))
-        .slice(start, end)
-        .map((item) => {
-          const date = new Date(item.createdAt);
-          const dateFormat = `${formatTime(
-            date.getDate().toString()
-          )}/${formatTime((date.getMonth() + 1).toString())}/${date
-            .getFullYear()
-            .toString()
-            .split("")
-            .slice(2)
-            .join("")} ${formatTime(
-            date.getUTCHours().toString()
-          )}:${formatTime(date.getMinutes().toString())}`;
-
-          return `
+      return `
           <tr>
               <td class="w-[5%]">
                   <div class="table-text">${item.id}</div>
@@ -72,30 +69,26 @@ const fetchAllBlogs = async (start, end) => {
               </td>
           </tr>
           `;
-        })
-        .join("");
+    })
+    .join("");
 
-      const editButtons = document.querySelectorAll(".btn-open-edit");
+  const editButtons = document.querySelectorAll(".btn-open-edit");
 
-      editButtons.forEach((btn) => {
-        btn.addEventListener("click", () => {
-          modal.classList.remove("hidden");
-          const dataObj = JSON.parse(btn.getAttribute("data-obj"));
-          modal.setAttribute("data-obj", btn.getAttribute("data-obj"));
-          console.log(btn.getAttribute("data-obj"));
-          modal.querySelector("#blog_title").value = dataObj.title;
-          modal.querySelector("#blog_content").value = dataObj.content;
-          modal.querySelector("#blog_image").value =
-            typeof dataObj.image === "string" ? dataObj.image : "";
-          modal.querySelector("h3").innerText = "Edit";
-        });
-      });
-    }
-  };
-  xhr.send();
+  editButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      modal.classList.remove("hidden");
+      const dataObj = JSON.parse(btn.getAttribute("data-obj"));
+      modal.setAttribute("data-obj", btn.getAttribute("data-obj"));
+      modal.querySelector("#blog_title").value = dataObj.title;
+      modal.querySelector("#blog_content").value = dataObj.content;
+      modal.querySelector("#blog_image").value =
+        typeof dataObj.image === "string" ? dataObj.image : "";
+      modal.querySelector("h3").innerText = "Edit";
+    });
+  });
 };
 
-fetchAllBlogs(startIndex, endIndex);
+renderBlogs(startIndex, endIndex);
 
 const clearData = () => {
   modal.querySelector("#blog_title").value = "";
@@ -117,7 +110,6 @@ modal.querySelector("#btn-save").addEventListener("click", async () => {
   const title = modal.querySelector("#blog_title").value;
   const content = modal.querySelector("#blog_content").value;
   const image = modal.querySelector("#blog_image").value;
-  const xhr = new XMLHttpRequest();
 
   const requestObj = {
     title,
@@ -126,25 +118,15 @@ modal.querySelector("#btn-save").addEventListener("click", async () => {
   };
 
   if (!dataObj) {
-    xhr.open(
-      "POST",
-      `https://617b71c2d842cf001711bed9.mockapi.io/api/v1/blogs`
-    );
+    await createBlogApi(JSON.stringify(requestObj));
   } else {
-    xhr.open(
-      "PUT",
-      `https://617b71c2d842cf001711bed9.mockapi.io/api/v1/blogs/${dataObj.id}`
-    );
+    await updateBlogApi(dataObj.id, JSON.stringify(requestObj))
   }
-  xhr.setRequestHeader("Content-Type", "application/json");
 
-  xhr.onload = () => {
-    fetchAllBlogs(startIndex, endIndex);
-    modal.classList.add("hidden");
-    clearData();
-  };
+  renderBlogs(startIndex, endIndex);
+  modal.classList.add("hidden");
+  clearData();
 
-  xhr.send(JSON.stringify(requestObj));
 });
 
 document.querySelector("#btn-open-create").addEventListener("click", () => {
@@ -158,13 +140,15 @@ btnPagination.forEach((btn) => {
     const type = btn.getAttribute("data-type");
     const totalPage = Math.ceil(totalCount / pageSize);
     if (type === "first") {
+      if (currentPage <= 1) return;
       startIndex = 0;
       endIndex = pageSize;
       currentPage = 1;
     } else if (type === "last") {
+      if (currentPage >= totalPage) return;
       endIndex = totalCount;
-      startIndex = Math.floor(totalCount / pageSize) * pageSize;
-      currentPage = totalPage;
+      startIndex = (Math.ceil(totalCount / pageSize) - 1) * pageSize;
+      currentPage = Math.ceil(totalCount / pageSize);
     } else if (type === "prev") {
       if (currentPage <= 1) return;
       startIndex = (currentPage - 2) * pageSize;
@@ -177,15 +161,15 @@ btnPagination.forEach((btn) => {
       endIndex = currentPage * pageSize;
     }
 
-    fetchAllBlogs(startIndex, endIndex);
+    renderBlogs(startIndex, endIndex);
     document.getElementById("current-page").innerText = currentPage;
   });
 });
 
-document.querySelector("#select-per-page").addEventListener('change', (e) => {
+document.querySelector("#select-per-page").addEventListener("change", (e) => {
   pageSize = Number(e.target.value);
   const currentIndex = (currentPage - 1) * pageSize;
   startIndex = currentIndex;
   endIndex = Math.min(currentIndex + pageSize, totalCount);
-  fetchAllBlogs(startIndex, endIndex);
-})
+  renderBlogs(startIndex, endIndex);
+});
