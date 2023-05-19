@@ -147,8 +147,8 @@ btnPagination.forEach((btn) => {
     } else if (type === "last") {
       if (currentPage >= totalPage) return;
       endIndex = totalCount;
-      startIndex = (Math.ceil(totalCount / pageSize) - 1) * pageSize;
-      currentPage = Math.ceil(totalCount / pageSize);
+      startIndex = (totalPage - 1) * pageSize;
+      currentPage = totalPage;
     } else if (type === "prev") {
       if (currentPage <= 1) return;
       startIndex = (currentPage - 2) * pageSize;
