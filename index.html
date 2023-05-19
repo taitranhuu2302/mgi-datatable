@@ -9,15 +9,7 @@
       rel="stylesheet"
       href="https://pro.fontawesome.com/releases/v5.0.10/css/all.css"
     />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style type="text/tailwindcss">
-      #table-blogs tr th {
-        @apply px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider;
-      }
-      #table-blogs tr td {
-        @apply px-6 py-4;
-      }
-    </style>
+    <link rel="stylesheet" href="/dist/output.css">
   </head>
   <body class="bg-[#ADD8E6]">
     <div class="mx-auto container">
@@ -49,7 +41,6 @@
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
-                <!-- More table rows... -->
               </tbody>
             </table>
           </div>
@@ -64,13 +55,11 @@
               >
                 <button
                   id="btn-prev-page"
-                  class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
                 >
                   <i class="fas fa-arrow-left"></i>
                 </button>
                 <button
                   id="btn-next-page"
-                  class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
                 >
                   <i class="fas fa-arrow-right"></i>
                 </button>
@@ -101,7 +90,6 @@
                   type="text"
                   name="blog_title"
                   id="blog_title"
-                  class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                 />
               </div>
               <div>
@@ -110,7 +98,6 @@
                   type="text"
                   name="blog_content"
                   id="blog_content"
-                  class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                 />
               </div>
               <div>
@@ -119,7 +106,6 @@
                   type="text"
                   name="blog_image"
                   id="blog_image"
-                  class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                 />
               </div>
             </div>
