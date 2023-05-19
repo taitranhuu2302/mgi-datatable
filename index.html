@@ -14,44 +14,91 @@
   <body class="bg-[#ADD8E6]">
     <div class="mx-auto container">
       <div class="flex flex-col mt-14">
-        <h2 class="text-center text-2xl font-bold mb-5 text-[#333333]">Manage blogs</h2>
+        <h2 class="text-center text-2xl font-bold mb-5 text-[#333333]">
+          Manage blogs
+        </h2>
         <div class="py-2 align-middle inline-block min-w-full">
+          <div class="mb-2 flex justify-end">
+            <button
+              id="btn-open-create"
+              class="bg-green-600 hover:bg-green-500 px-5 py-2 rounded text-white"
+            >
+              Create
+            </button>
+          </div>
           <div
             class="shadow-md overflow-hidden border-b border-gray-200 rounded-lg"
           >
-            <table class="min-w-full divide-y divide-gray-200">
+            <table id="table-blogs" class="min-w-full divide-y divide-gray-200">
               <thead class="bg-gray-50">
                 <tr>
                   <th
                     scope="col"
                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
-                    Column 1
+                    Id
                   </th>
                   <th
                     scope="col"
                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
-                    Column 2
+                    Title
                   </th>
                   <th
                     scope="col"
                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
-                    Column 3
+                    Image
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Content
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Created At
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Actions
                   </th>
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
                 <tr>
                   <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm text-gray-900">Data 1</div>
+                    <div class="text-sm text-gray-900">#1</div>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm text-gray-900">Data 2</div>
+                    <div class="text-sm text-gray-900">Title</div>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm text-gray-900">Data 3</div>
+                    <div class="text-sm text-gray-900">23/02/2002</div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900">
+                      <img
+                        class="w-[70px] rounded h-[70px]"
+                        src="https://d1m75rqqgidzqn.cloudfront.net/wp-data/2020/09/17103047/iStock-813581436.jpg"
+                        alt=""
+                      />
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900">Content</div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <button
+                      class="px-3 py-3 text-white rounded max-w-1/2 hover:bg-blue-400 bg-blue-500"
+                    >
+                      Edit
+                    </button>
                   </td>
                 </tr>
                 <!-- More table rows... -->
@@ -62,39 +109,96 @@
 
         <div class="px-4 py-3 flex items-center justify-between sm:px-6">
           <div class="flex-1 flex items-center justify-between">
-            <div>
-              <p class="text-sm text-gray-700">
-                Showing
-                <span class="font-medium">1</span>
-                to
-                <span class="font-medium">10</span>
-                of
-                <span class="font-medium">100</span>
-                results
-              </p>
-            </div>
+            <div id="total-record"></div>
             <div>
               <nav
                 class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
                 aria-label="Pagination"
               >
-                <a
-                  href="#"
+                <button
+                  id="btn-prev-page"
                   class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
                 >
                   <i class="fas fa-arrow-left"></i>
-                </a>
-                <a
-                  href="#"
+                </button>
+                <button
+                  id="btn-next-page"
                   class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
                 >
                   <i class="fas fa-arrow-right"></i>
-                </a>
+                </button>
               </nav>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <div class="relative z-10 hidden" id="modal-blog">
+      <div
+        class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+      ></div>
+      <div class="fixed inset-0 z-10 overflow-y-auto">
+        <div
+          class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0"
+        >
+          <div
+            class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg"
+          >
+            <div
+              class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4 flex flex-col gap-2.5"
+            >
+              <h3 class="text-xl text-center">Create</h3>
+              <div>
+                <label for="blog_title">Title</label>
+                <input
+                  type="text"
+                  name="blog_title"
+                  id="blog_title"
+                  class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                />
+              </div>
+              <div>
+                <label for="blog_content">Content</label>
+                <input
+                  type="text"
+                  name="blog_content"
+                  id="blog_content"
+                  class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                />
+              </div>
+              <div>
+                <label for="blog_image">Image Link</label>
+                <input
+                  type="text"
+                  name="blog_image"
+                  id="blog_image"
+                  class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                />
+              </div>
+            </div>
+            <div
+              class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6"
+            >
+              <button
+                type="button"
+                id="btn-save"
+                class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
+              >
+                Save
+              </button>
+              <button
+                type="button"
+                id="btn-cancel"
+                class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script defer src="./index.js"></script>
   </body>
 </html>
