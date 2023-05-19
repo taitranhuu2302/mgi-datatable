@@ -27,7 +27,7 @@
             </button>
           </div>
           <div
-            class="shadow-md overflow-hidden border-b border-gray-200 rounded-lg"
+            class="shadow-md max-h-[556px] min-w-[800px] overflow-auto border-b border-gray-200 rounded-lg"
           >
             <table id="table-blogs" class="min-w-full divide-y divide-gray-200">
               <thead class="bg-gray-50">
@@ -44,19 +44,29 @@
             </table>
           </div>
         </div>
-        <div class="px-4 py-3 flex items-center justify-between sm:px-6">
-          <div class="flex-1 flex items-center justify-between">
-            <div id="total-record"></div>
-            <div
-              class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
+        <div class="pagination">
+          <button data-type="first" class="rounded-l-md btn-pagi">
+            <i class="fas fa-angle-double-left"></i>
+          </button>
+          <button data-type="prev" class="btn-pagi">
+            <i class="fas fa-caret-left"></i>
+          </button>
+          <div id="current-page" class="px-4 py-2 bg-gray-200 font-semibold">1</div>
+          <button data-type="next" class="btn-pagi">
+            <i class="fas fa-caret-right"></i>
+          </button>
+          <button data-type="last" class="rounded-r-md btn-pagi">
+            <i class="fas fa-angle-double-right"></i>
+          </button>
+          <div class="ml-4">
+            <select
+              class="bg-white text-gray-700 outline-none rounded"
+              id="select-per-page"
             >
-              <button id="btn-prev-page">
-                <i class="fas fa-arrow-left"></i>
-              </button>
-              <button id="btn-next-page">
-                <i class="fas fa-arrow-right"></i>
-              </button>
-            </div>
+              <option value="5">5 per page</option>
+              <option value="10">10 per page</option>
+              <option value="20">20 per page</option>
+            </select>
           </div>
         </div>
       </div>
