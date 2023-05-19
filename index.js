@@ -2,6 +2,11 @@ const tableBlogs = document.querySelector("#table-blogs");
 const modal = document.querySelector("#modal-blog");
 let startRecord = 0;
 let endRecord = 5;
+let countRecord = 0;
+
+const formatTime = (str) => {
+  return str.length === 1 ? `0${str}` : str;
+};
 
 const fetchAllBlogs = async (start, end) => {
   let xhr = new XMLHttpRequest();
@@ -13,17 +18,7 @@ const fetchAllBlogs = async (start, end) => {
     if (xhr.readyState === 4) {
       data = JSON.parse(xhr.response);
 
-      if (start <= 0) {
-        start = 0;
-        startRecord = 0;
-        end = 5;
-        endRecord = 5;
-      }
-
-      if (end > data.length) {
-        end = data.length;
-        endRecord = data.length;
-      }
+      countRecord = data.length;
 
       const tbody = tableBlogs.querySelector("tbody");
       const totalRecord = document.getElementById("total-record");
@@ -35,7 +30,9 @@ const fetchAllBlogs = async (start, end) => {
           <span class="font-medium">${end}</span>
           of
           <span class="font-medium">${data.length}</span>
-          results
+          results,
+          Current page: 
+          <span class="font-medium">${Math.ceil((start - 1) / 5) + 1}</span>
       </p>
     `;
 
@@ -44,25 +41,25 @@ const fetchAllBlogs = async (start, end) => {
         .slice(start, end)
         .map((item) => {
           const date = new Date(item.createdAt);
-          const dateFormat = `${date.getDate()}/${
-            (date.getMonth() + 1).toString().length === 1
-              ? `0${date.getMonth() + 1}`
-              : date.getMonth() + 1
-          }/${date
+          const dateFormat = `${formatTime(
+            date.getDate().toString()
+          )}/${formatTime((date.getMonth() + 1).toString())}/${date
             .getFullYear()
             .toString()
             .split("")
             .slice(2)
-            .join("")} ${date.getHours()}:${date.getMinutes()}`;
+            .join("")} ${formatTime(
+            date.getUTCHours().toString()
+          )}:${formatTime(date.getMinutes().toString())}`;
           return `
           <tr>
-              <td class="px-6 py-4">
+              <td>
                   <div class="text-sm text-gray-900">${item.id}</div>
               </td>
-              <td class="px-6 py-4">
+              <td>
                   <div class="text-sm text-gray-900">${item.title}</div>
               </td>
-              <td class="px-6 py-4">
+              <td>
                   <div class="text-sm text-gray-900">
                       <img
                       class="w-[70px] rounded h-[70px]"
@@ -71,13 +68,13 @@ const fetchAllBlogs = async (start, end) => {
                       />
                   </div>
               </td>
-              <td class="px-6 py-4">
+              <td>
                   <div class="text-sm text-gray-900">${item.content}</div>
               </td>
-              <td class="px-6 py-4">
+              <td>
                   <div class="text-sm text-gray-900">${dateFormat}</div>
               </td>
-              <td class="px-6 py-4">
+              <td>
                   <button
                       data-obj='${JSON.stringify(item)}'
                       class="px-3 py-3 text-white rounded btn-open-edit max-w-1/2 hover:bg-blue-400 bg-blue-500"
@@ -167,12 +164,14 @@ document.querySelector("#btn-open-create").addEventListener("click", () => {
 });
 
 document.querySelector("#btn-next-page").addEventListener("click", () => {
+  if (endRecord >= countRecord) return;
   startRecord = endRecord;
   endRecord += 5;
   fetchAllBlogs(startRecord, endRecord);
 });
 
 document.querySelector("#btn-prev-page").addEventListener("click", () => {
+  if (startRecord <= 0) return;
   endRecord = startRecord;
   startRecord -= 5;
   fetchAllBlogs(startRecord, endRecord);

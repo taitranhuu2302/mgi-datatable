@@ -10,6 +10,14 @@
       href="https://pro.fontawesome.com/releases/v5.0.10/css/all.css"
     />
     <script src="https://cdn.tailwindcss.com"></script>
+    <style type="text/tailwindcss">
+      #table-blogs tr th {
+        @apply px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider;
+      }
+      #table-blogs tr td {
+        @apply px-6 py-4;
+      }
+    </style>
   </head>
   <body class="bg-[#ADD8E6]">
     <div class="mx-auto container">
@@ -32,81 +40,20 @@
             <table id="table-blogs" class="min-w-full divide-y divide-gray-200">
               <thead class="bg-gray-50">
                 <tr>
-                  <th
-                    scope="col"
-                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Id
-                  </th>
-                  <th
-                    scope="col"
-                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Title
-                  </th>
-                  <th
-                    scope="col"
-                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Image
-                  </th>
-                  <th
-                    scope="col"
-                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Content
-                  </th>
-                  <th
-                    scope="col"
-                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Created At
-                  </th>
-                  <th
-                    scope="col"
-                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Actions
-                  </th>
+                  <th scope="col">Id</th>
+                  <th scope="col">Title</th>
+                  <th scope="col">Image</th>
+                  <th scope="col">Content</th>
+                  <th scope="col">Created At</th>
+                  <th scope="col">Actions</th>
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
-                <tr>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm text-gray-900">#1</div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm text-gray-900">Title</div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm text-gray-900">23/02/2002</div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm text-gray-900">
-                      <img
-                        class="w-[70px] rounded h-[70px]"
-                        src="https://d1m75rqqgidzqn.cloudfront.net/wp-data/2020/09/17103047/iStock-813581436.jpg"
-                        alt=""
-                      />
-                    </div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm text-gray-900">Content</div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <button
-                      class="px-3 py-3 text-white rounded max-w-1/2 hover:bg-blue-400 bg-blue-500"
-                    >
-                      Edit
-                    </button>
-                  </td>
-                </tr>
                 <!-- More table rows... -->
               </tbody>
             </table>
           </div>
         </div>
-
         <div class="px-4 py-3 flex items-center justify-between sm:px-6">
           <div class="flex-1 flex items-center justify-between">
             <div id="total-record"></div>
