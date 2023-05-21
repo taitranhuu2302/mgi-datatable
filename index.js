@@ -168,8 +168,20 @@ btnPagination.forEach((btn) => {
 
 document.querySelector("#select-per-page").addEventListener("change", (e) => {
   pageSize = Number(e.target.value);
-  const currentIndex = (currentPage - 1) * pageSize;
-  startIndex = currentIndex;
-  endIndex = Math.min(currentIndex + pageSize, totalCount);
+  startIndex = (currentPage - 1) * pageSize;
+  endIndex = startIndex + pageSize;
+  const totalPage = Math.ceil(totalCount / pageSize);
+
+  if (endIndex > totalCount) {
+    endIndex = totalCount;
+  }
+  
+  if (currentPage > totalPage) {
+    currentPage = totalPage;
+    startIndex = (currentPage - 1) * pageSize;
+    endIndex = totalCount;
+    document.getElementById("current-page").innerText = currentPage;
+  }
+  
   renderBlogs(startIndex, endIndex);
 });
